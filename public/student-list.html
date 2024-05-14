@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Quản lý học phí</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+    <!-- Feathericon CSS -->
+    <link rel="stylesheet" href="assets/css/feathericon.min.css">
+
+    <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+        if (sessionStorage.getItem('QLHPfouhuewuinjkjh')) {
+            console.log("Đã đăng nhập");
+    
+            // Lấy đối tượng user từ sessionStorage và chuyển đổi thành đối tượng JavaScript
+            const loggedInUser = JSON.parse(sessionStorage.getItem('QLHPfouhuewuinjkjh'));
+            
+        } else {
+            window.location.href = "sign.html?autolog=false";
+        }
+         // Lấy URL hiện tại
+         var url = new URL(window.location.href);
+
+        // Lấy giá trị của tham số studentKey từ URL
+        var studentKey = url.searchParams.get("classKey");
+
+        // Kiểm tra nếu studentKey không rỗng và không null
+        if (!studentKey) {
+            console.log("classKey không tồn tại trong URL.");
+            // Chuyển hướng người dùng về trang chủ index.html
+            window.location.href = "index.html";
+        }
+    </script>
+    <style>
+                        /* table */
+        /* làm cho bảng hiển thị xếp chồng trên mobile */
+        table{
+            border-collapse: collapse;
+            margin:0;
+            width:100%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, .25)
+        }
+        table tr {
+            padding: .45em;
+        }
+        tbody tr:nth-child(even){
+            background-color: #a7b5ff24;
+        }
+        table th,
+        table td {
+            font-size: 1em;
+            padding: 1em;
+            text-align: center;
+        }
+        thead th {
+            color: #fff;
+            font-size: 1.15em;
+        }
+        @media (max-width:768px){
+            .card-body{
+                background-color: rgba(246, 249, 255, 1);
+            }
+            table{
+                /* border: 3px solid rgba(45, 51, 74, 0.425); */
+                border-radius: 30px;
+                box-shadow: 0 5px 5px rgba(0, 0, 0, .25)
+            }
+            table thead tr{
+                display: none;
+                
+            }
+            table tr{
+                display: block;
+                border-radius: 10px;
+                box-shadow: 0px 6px 9px -3px rgba(0, 0, 0, .25);
+                margin-bottom: 30px;
+            }
+            table th, table td{
+                padding: .5em;
+            }
+            table td{
+                text-align: right;
+                display: block;
+                font-size: 1em;
+                margin-top: -6px;
+                margin-bottom: 2px;
+            }
+            table td:not(:last-child)::before { 
+                /* Thêm dấu hai chấm cho tất cả các ô dữ liệu trừ cột cuối cùng */
+                content: attr(data-title) ": ";
+                float: left;
+                font-weight: bold; /* In đậm */
+                text-transform: uppercase; /* Viết hoa */
+
+            }
+            tbody tr:nth-child(even){
+                background-color: aliceblue;
+                border-top: 1px solid #c5c5c5;
+            }
+            tbody tr:nth-child(odd){
+               
+                border-top: 1px solid #c5c5c5;
+            }
+             /* Ẩn cột STT và cột số học sinh */
+            table td:nth-child(1) /* 1 là số thứ tự của cột trong bảng */
+            { 
+                display: none;
+            }
+            table td:nth-child(8) { 
+                justify-content: center;
+                align-items: center;
+                display: flex;
+            }
+            table td:nth-child(8) button { 
+                margin: 2px;
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <img src="https://i.ibb.co/fx24MnV/favicon.png" alt="Logo">
+                </a>
+                <a href="index.html" class="logo logo-small">
+                    <img src="https://i.ibb.co/fx24MnV/favicon.png" alt="Logo" width="30" height="30">
+                </a>
+            </div>
+            <!-- /Logo -->
+
+            <a href="javascript:void(0);" id="toggle_btn">
+                <i class="fe fe-text-align-left"></i>
+            </a>
+
+            <div class="top-nav-search">
+                <form>
+                    <input type="text" class="form-control" placeholder="Search here">
+                    <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <a class="mobile_btn" id="mobile_btn">
+                <i class="fa fa-bars"></i>
+            </a>
+            <!-- /Mobile Menu Toggle -->
+
+            <!-- Header Right Menu -->
+            <ul class="nav user-menu">
+
+                <!-- Notifications -->
+                <li class="nav-item dropdown noti-dropdown">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+                    </a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span class="notification-title">Notifications</span>
+                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+                        </div>
+                        <div class="noti-content">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar avatar-sm">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="assets/img/doctors/doctor-thumb-01.jpg">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span>
+                                                    Schedule <span class="noti-title">her appointment</span></p>
+                                                <p class="noti-time"><span class="notification-time">4 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar avatar-sm">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="assets/img/patients/patient1.jpg">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Charlene Reed</span>
+                                                    has booked her appointment to <span class="noti-title">Dr. Ruby
+                                                        Perrin</span></p>
+                                                <p class="noti-time"><span class="notification-time">6 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar avatar-sm">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="assets/img/patients/patient2.jpg">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Travis Trimble</span>
+                                                    sent a amount of $210 for his <span
+                                                        class="noti-title">appointment</span></p>
+                                                <p class="noti-time"><span class="notification-time">8 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar avatar-sm">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="assets/img/patients/patient3.jpg">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Carl Kelly</span> send
+                                                    a message <span class="noti-title"> to his doctor</span></p>
+                                                <p class="noti-time"><span class="notification-time">12 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="#">View all Notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- /Notifications -->
+
+                <!-- User Menu -->
+<li class="nav-item dropdown has-arrow">
+    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+        <span class="user-img">
+            <img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="User Avatar" id="userAvatar">
+        </span>
+    </a>
+    <div class="dropdown-menu">
+        <div class="user-header">
+            <div class="avatar avatar-sm">
+                <img src="assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle" id="userAvatarDropdown">
+            </div>
+            <div class="user-text">
+                <h6 id="userName"></h6>
+                <p class="text-muted mb-0" id="userEmail"></p>
+            </div>
+        </div>
+        <a class="dropdown-item" id="sign-out-btn" href="sign.html?autolog=false">Đăng xuất</a>
+    </div>
+</li>
+<!-- /User Menu -->
+<script>
+            // Lấy đối tượng user từ sessionStorage và chuyển đổi thành đối tượng JavaScript
+            const loggedInUser = JSON.parse(sessionStorage.getItem('QLHPfouhuewuinjkjh'));
+
+            const userName = loggedInUser.displayName;
+            const userEmail = loggedInUser.email;
+            const userAvatar = loggedInUser.photoURL;
+           
+            // Hiển thị thông tin người dùng trong user menu
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userEmail').innerText = userEmail;
+            
+            // Nếu có ảnh đại diện của người dùng, hiển thị nó
+            if (loggedInUser.photoURL) {
+                document.getElementById('userAvatar').src = userAvatar;
+                document.getElementById('userAvatarDropdown').src = userAvatar;
+            }
+</script>
+
+            </ul>
+            <!-- /Header Right Menu -->
+
+        </div>
+        <!-- /Header -->
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">
+                            <span>Main</span>
+                        </li>
+                        <li>
+                            <a href="index.html"><i class="fe fe-home"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li class="active">
+                            <a href="class-list.html"><i class="fe fe-layout"></i> <span>Danh sách lớp</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fe fe-document"></i> <span> Xuất thông tin</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="404.html">Xuất file PDF</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Sidebar -->
+
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+
+            <div class="content container-fluid">
+
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3 class="page-title">Quản lý học sinh</h3>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="class-list.html">Danh sách lớp</a></li>
+                                <li class="breadcrumb-item active">Danh sách học sinh lớp ?</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col">
+                            <a href="#Add_Student" data-toggle="modal" class="btn btn-primary float-right mt-2">Thêm học
+                                sinh</a>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- /Page Header -->
+
+                <!-- <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div class="table-responsive" id="tableFather">
+                                        <table class="datatable table table-hover table-center mb-0 text-center"
+                                            id="tableStudentList">
+                                            <thead>
+                                                <tr>
+                                                    <th>Số thứ tự</th>
+                                                    <th>Họ và tên</th>
+                                                    <th>SĐT phụ huynh</th>
+                                                    <th>Tên phụ huynh</th>
+                                                    <th>Ghi chú</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Cập nhật</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <h2 class="display-18 display-md-16 display-lg-14 mb-0">Học phí: <span class="text-primary" id="tuitionFee"></span></h2>
+                                    <div class="table-responsive" id="tableFather">
+                                        <table class="table table-hover table-center mb-0 text-center"
+                                            id="tableclassList">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Họ và tên</th>
+                                                    <th>SĐT PH</th>
+                                                    <th>Tên PH</th>
+                                                    <th>Ghi chú</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Email PH</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </div>
+        </div>
+        <!-- /Page Wrapper -->
+        <!-- Thẻ nhỏ cho phép chọn các nút thêm, sửa, xoá -->
+        <div id="actionMenu"
+            style="display: none; position: absolute; background-color: #f9f9f9; border: 1px solid #ccc; padding: 10px;">
+            <a href="#" class="btn btn-sm bg-primary-light">
+                <i class=""></i> Thêm
+            </a>
+            <a href="#" class="btn btn-sm bg-success-light">
+                <i class="fe fe-pencil"></i> Sửa
+            </a>
+            <a href="#" class="btn btn-sm bg-danger-light">
+                <i class="fe fe-trash"></i> Xoá
+            </a>
+        </div>
+        <!-- Add Modal -->
+        <div class="modal fade" id="Add_Student" aria-hidden="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Thêm học sinh</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-row">
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Họ và tên</label>
+                                    <input type="text" class="form-control" id="studentName">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>SĐT phụ huynh</label>
+                                    <input type="text" class="form-control" id="parentPhone">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Tên phụ huynh</label>
+                                    <input type="text" class="form-control" id="parentName">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Email Phụ huynh</label>
+                                    <input type="email" class="form-control" id="parentEmail">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <input type="text" class="form-control" id="note">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" data-dismiss="modal" class="btn btn-primary btn-block" id="add-btn">Thêm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ADD Modal -->
+        <!-- Edit Details Modal -->
+        <div class="modal fade" id="edit_student" aria-hidden="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sửa thông tin học sinh</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-row">
+                            <div class="col-12 col-sm-12">
+                                <input type="hidden" name="sp_id_del" id="studentIdEdit">
+                                <div class="form-group">
+                                    <label>Họ và tên</label>
+                                    <input type="text" class="form-control" id="studentNameEdit">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>SĐT phụ huynh</label>
+                                    <input type="text" class="form-control" id="parentPhoneEdit">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Tên phụ huynh</label>
+                                    <input type="text" class="form-control" id="parentNameEdit">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Email Phụ huynh</label>
+                                    <input type="email" class="form-control" id="parentEmailEdit">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <input type="text" class="form-control" id="noteEdit">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" data-dismiss="modal" class="btn btn-primary btn-block" id="edit-btn">Sửa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Details Modal -->
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-content p-2">
+                            <h4 class="modal-title">Xoá học sinh</h4>
+                            
+                            <input type="text" name="studentIdDel" class="border-0 text-center" id="studentNameToDel" readonly>
+                            <p class="mb-4">Bạn có chắc chắn muốn xoá?</p>
+                            <input type="hidden" name="studentIdDel" id="studentIdDel">
+                            <button type="submit" class="btn btn-primary" data-dismiss="modal" id="delete-btn"
+                                >Xoá</button>
+                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Không</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Modal -->
+        <!-- Collection Modal -->
+        <div class="modal fade" id="collection_modal" aria-hidden="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content text-center">
+                    <div class="modal-body">
+                        <div class="form-content p-2">
+                            <h4 class="modal-title">Xác nhận thu tiền</h4>
+                            <p class="mb-4">Bạn chắc chưa?</p>
+                            <input type="hidden" name="monthCollection" id="monthCollection">
+                            <input type="hidden" name="idCollection" id="idCollection">
+                            <div class="input-group">
+                                <input type="text" name="note" id="note" class="form-control shadow-sm rounded-end mb-4"
+                                    placeholder="Ghi chú ...">
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-dismiss="modal" id="collection-btn">Chắc</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Chưa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Collection Modal -->
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- jQuery -->
+    <script src="assets/js/jquery-3.2.1.min.js"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- <script src="assets/plugins/raphael/raphael.min.js"></script>
+    <script src="assets/plugins/morris/morris.min.js"></script>
+    <script src="assets/js/chart.morris.js"></script> -->
+
+    <!-- Custom JS -->
+    <script src="assets/js/script.js"></script>
+
+    <script defer type="module" src="main.js"></script>
+
+
+    <!-- mộ số hàm phải bỏ vào đây cho nó render trước mới dùng được ở phía sau -->
+    <script>
+        function FillEditModal(studentKey, ten_hs, sdt_ph, ten_ph, ghi_chu, email_ph) {
+            // Điền thông tin từ hàng được chọn vào các trường input trong modal sửa
+            document.getElementById("studentIdEdit").value = studentKey;
+            document.getElementById("studentNameEdit").value = ten_hs;
+            document.getElementById("parentPhoneEdit").value = sdt_ph;
+            document.getElementById("parentNameEdit").value = ten_ph;
+            document.getElementById("noteEdit").value = ghi_chu;
+            document.getElementById("parentEmailEdit").value = email_ph;
+        }
+        function FillDeleteModal(studentKey, ten_hs) {
+            
+            document.getElementById("studentIdDel").value = studentKey;  
+            document.getElementById("studentNameToDel").value = ten_hs;     
+        }
+    </script>
+   
+    
+
+</body>
+
+</html>

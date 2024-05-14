@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Quản lý học phí</title>
+		<script>
+			// Kiểm tra xem người dùng đã đăng nhập hay chưa
+			if (sessionStorage.getItem('QLHPfouhuewuinjkjh')) {
+				// Lấy đối tượng user từ sessionStorage và chuyển đổi thành đối tượng JavaScript
+				const loggedInUser = JSON.parse(sessionStorage.getItem('QLHPfouhuewuinjkjh'));
+			} else {
+				window.location.href = "sign.html?autolog=false";
+			}
+		</script>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		
+		<!-- Fontawesome CSS -->
+		<link rel="stylesheet" href="assets/css/all.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="assets/css/feathericon.min.css">
+		
+		<link rel="stylesheet" href="assets/plugins/morris/morris.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="assets/css/style.css">
+		
+</head>
+    <body>
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+			<!-- Header -->
+            <div class="header">
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <img src="https://avatars.githubusercontent.com/u/2110319?s=80&u=567a9360f97b193122a597a75c83c8261d0ba832&v=4" alt="Logo">
+                </a>
+                <a href="index.html" class="logo logo-small">
+                    <img src="https://avatars.githubusercontent.com/u/2110319?s=80&u=567a9360f97b193122a597a75c83c8261d0ba832&v=4" alt="Logo" width="30" height="30">
+                </a>
+            </div>
+            <!-- /Logo -->
+				
+				<a href="javascript:void(0);" id="toggle_btn">
+					<i class="fe fe-text-align-left"></i>
+				</a>
+				
+				<div class="top-nav-search">
+					<form>
+						<input type="text" class="form-control" placeholder="Search here">
+						<button class="btn" type="submit"><i class="fa fa-search"></i></button>
+					</form>
+				</div>
+				
+				<!-- Mobile Menu Toggle -->
+				<a class="mobile_btn" id="mobile_btn">
+					<i class="fa fa-bars"></i>
+				</a>
+				<!-- /Mobile Menu Toggle -->
+				
+				<!-- Header Right Menu -->
+				<ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<!-- <li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">Notifications</span>
+								<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<li class="notification-message">
+										<a href="#">
+											<div class="media">
+												<span class="avatar avatar-sm">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/doctors/doctor-thumb-01.jpg">
+												</span>
+												<div class="media-body">
+													<p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span> Schedule <span class="noti-title">her appointment</span></p>
+													<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="#">
+											<div class="media">
+												<span class="avatar avatar-sm">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient1.jpg">
+												</span>
+												<div class="media-body">
+													<p class="noti-details"><span class="noti-title">Charlene Reed</span> has booked her appointment to <span class="noti-title">Dr. Ruby Perrin</span></p>
+													<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="#">
+											<div class="media">
+												<span class="avatar avatar-sm">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient2.jpg">
+												</span>
+												<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Travis Trimble</span> sent a amount of $210 for his <span class="noti-title">appointment</span></p>
+												<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="#">
+											<div class="media">
+												<span class="avatar avatar-sm">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient3.jpg">
+												</span>
+												<div class="media-body">
+													<p class="noti-details"><span class="noti-title">Carl Kelly</span> send a message <span class="noti-title"> to his doctor</span></p>
+													<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="#">View all Notifications</a>
+							</div>
+						</div>
+					</li> -->
+					<!-- /Notifications -->
+					
+        <!-- User Menu -->
+		<li class="nav-item dropdown has-arrow">
+			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+				<span class="user-img">
+					<img class="rounded-circle" src="" width="31"
+						alt="User Avatar" id="userAvatar">
+				</span>
+			</a>
+			<div class="dropdown-menu">
+				<div class="user-header">
+					<div class="avatar avatar-sm">
+						<img src="" alt="User Image"
+							class="avatar-img rounded-circle" id="userAvatarDropdown">
+					</div>
+					<div class="user-text">
+						<h6 id="userName"></h6>
+						<p class="text-muted mb-0" id="userEmail"></p>
+					</div>
+				</div>
+				<a class="dropdown-item" id="sign-out-btn" onclick="signOutUser()" href="sign.html?autolog=false">Đăng xuất</a>
+			</div>
+		</li>
+		<!-- /User Menu -->
+		<script>
+			// Lấy đối tượng user từ sessionStorage và chuyển đổi thành đối tượng JavaScript
+			const loggedInUser = JSON.parse(sessionStorage.getItem('QLHPfouhuewuinjkjh'));
+
+			const userName = loggedInUser.displayName;
+			const userEmail = loggedInUser.email;
+			const userAvatar = loggedInUser.photoURL;
+
+			// Hiển thị thông tin người dùng trong user menu
+			document.getElementById('userName').textContent = userName;
+			document.getElementById('userEmail').innerText = userEmail;
+
+			// Nếu có ảnh đại diện của người dùng, hiển thị nó
+			if (loggedInUser.photoURL) {
+				document.getElementById('userAvatar').src = userAvatar;
+				document.getElementById('userAvatarDropdown').src = userAvatar;
+			}
+		</script>
+					
+				</ul>
+				<!-- /Header Right Menu -->
+				
+            </div>
+			<!-- /Header -->
+			
+		        <!-- Sidebar -->
+				<div class="sidebar" id="sidebar">
+					<div class="sidebar-inner slimscroll">
+						<div id="sidebar-menu" class="sidebar-menu">
+							<ul>
+								<li class="menu-title">
+									<span>Main</span>
+								</li>
+								<li class="active">
+									<a href="index.html"><i class="fe fe-home"></i> <span>Dashboard</span></a>
+								</li>
+								<li>
+									<a href="class-list.html"><i class="fe fe-layout"></i> <span>Danh sách lớp</span></a>
+								</li>
+								<li class="submenu">
+									<a href="#"><i class="fe fe-document"></i> <span> Xuất thông tin</span> <span
+											class="menu-arrow"></span></a>
+									<ul style="display: none;">
+										<li><a href="404.html">Xuất file PDF</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+			<div class="page-wrapper">
+			
+				<div class="content container-fluid">
+					
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">Welcome Teacher!</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item active">Dashboard</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+			
+					<style>
+						/* $primary-color: #f50045;
+						$secondary-color: #000;
+						$bar-height: 1.5rem; */
+						.ce_ixelgen_progress_bar {
+							max-width: 800px;
+							margin: 0 auto;
+							.progress_bar_item {
+								margin-bottom: 2rem;
+							}
+							.item_label,
+							.item_value {
+								font-size: 1.2rem;
+								font-weight: 600;
+								color: #333;
+								margin-bottom: 0.5rem;
+							}
+							.item_value {
+								font-weight: 400;
+							}
+							.item_bar {
+								position: relative;
+								height: 1.5rem;
+								width: 100%;
+								background-color: #ab9be7 !important;
+								border-radius: 4px;
+								.progress {
+									position: absolute;
+									left: 0;
+									top: 0;
+									bottom: 0;
+									width: 0;
+									height: 1.5rem;
+									margin: 0;
+									background-color: #f50045;
+									border-radius: 4px;
+									transition: width 100ms ease;
+								}
+							}
+						}
+					</style>
+
+					<!-- test progress-bar -->
+					
+					
+					<!-- /test progress-bar -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+					<div class="row">
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-primary border-primary">
+											<i class="fa-solid fa-house-user"></i>
+										</span>
+										<div class="dash-count">
+											<h3>30</h3>
+										</div>
+									</div>
+
+									<!-- <div class="ce_ixelgen_progress_bar block">					
+										<div class="progress_bar">
+											<div class="progress_bar_item grid-x">
+												<div class="item_label cell auto">Performance</div>
+												<div class="item_value cell shrink">0%</div>
+												<div class="item_bar cell"><div class="progress" data-progress="70"></div></div>
+											</div>
+										</div>
+									</div>
+									 -->
+
+
+
+									<div class="dash-widget-info">
+										<h6 class="text-muted">Lớp học</h6>
+										<div class="ce_ixelgen_progress_bar block">					
+											<div class="progress_bar">
+												<div class="progress_bar_item grid-x">
+													<div class="item_value cell shrink">0%</div>
+													<div class="item_bar cell"><div class="progress" data-progress="70"></div></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-success">
+											<i class="fe fe-users"></i>
+										</span>
+										<div class="dash-count">
+											<h3>487</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">Học sinh</h6>
+										<div class="ce_ixelgen_progress_bar block">					
+											<div class="progress_bar">
+												<div class="progress_bar_item grid-x">
+													<div class="item_value cell shrink">0%</div>
+													<div class="item_bar cell"><div class="progress" data-progress="70"></div></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-danger border-danger">
+											<i class="fe fe-money"></i>
+										</span>
+										<div class="dash-count">
+											<h3>40</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">Chưa nộp tiền</h6>
+										<div class="ce_ixelgen_progress_bar block">					
+											<div class="progress_bar">
+												<div class="progress_bar_item grid-x">
+													<div class="item_value cell shrink">0%</div>
+													<div class="item_bar cell"><div class="progress" data-progress="70"></div></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-warning border-warning">
+											<i class="fe fe-folder"></i>
+										</span>
+										<div class="dash-count">
+											<h3>$62523</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">Tổng doanh thu</h6>
+										<div class="ce_ixelgen_progress_bar block">					
+											<div class="progress_bar">
+												<div class="progress_bar_item grid-x">
+													<div class="item_value cell shrink">0%</div>
+													<div class="item_bar cell"><div class="progress" data-progress="70"></div></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-lg-6">
+						
+							<!-- Sales Chart -->
+							<div class="card card-chart">
+								<div class="card-header">
+									<h4 class="card-title">Doanh thu</h4>
+								</div>
+								<div class="card-body">
+									<div id="morrisArea"></div>
+								</div>
+							</div>
+							<!-- /Sales Chart -->
+							
+						</div>
+						<div class="col-md-12 col-lg-6">
+						
+							<!-- Invoice Chart -->
+							<div class="card card-chart">
+								<div class="card-header">
+									<h4 class="card-title">Status</h4>
+								</div>
+								<div class="card-body">
+									<div id="morrisLine"></div>
+								</div>
+							</div>
+							<!-- /Invoice Chart -->							
+						</div>	
+					</div>										
+				</div>			
+			</div>
+			<!-- /Page Wrapper -->		
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<script src="assets/plugins/raphael/raphael.min.js"></script>    
+		<script src="assets/plugins/morris/morris.min.js"></script>  
+		<script src="assets/js/chart.morris.js"></script>
+		
+		<!-- Custom JS -->
+		<script src="assets/js/script.js"></script>
+		<script src="assets/js/email.min.js"></script>
+
+		<script defer type="module" src="main.js"></script>
+
+		<script>
+			/**
+			* Progress bar animation by Hakan Havutcuoglu
+			* https://codepen.io/havutcuoglu/pen/abMdvoq
+			* This notice MUST stay intact in JS files and SCRIPT tags for free and legal usege.
+			*/
+
+		   $(document).ready(function(){
+			   progress_bar();
+		   });
+
+		   function progress_bar() {
+			   var speed = 30;
+			   var items = $('.progress_bar').find('.progress_bar_item');
+			   
+			   items.each(function() {
+				   var item = $(this).find('.progress');
+				   var itemValue = item.data('progress');
+				   var i = 0;
+				   var value = $(this);
+				   
+				   var count = setInterval(function(){
+					   if(i <= itemValue) {
+						   var iStr = i.toString();
+						   item.css({
+							   'width': iStr+'%'
+						   });
+						   value.find('.item_value').html(iStr +'%');
+					   }
+					   else {
+						   clearInterval(count);
+					   }
+					   i++;
+				   },speed);
+			   });
+		   }
+	   </script>
+	   	<script type="module">
+			// Import the functions you need from the SDKs you need
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+			import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+			import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-messaging.js";
+			// TODO: Add SDKs for Firebase products that you want to use
+			// https://firebase.google.com/docs/web/setup#available-libraries
+		  
+			// Your web app's Firebase configuration
+			// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+			const firebaseConfig = {
+			  apiKey: "AIzaSyAy2pYqsON8gyH1_HzB-jfSZRTXc46rzyM",
+			  authDomain: "qlhp-6dc0a.firebaseapp.com",
+			  databaseURL: "https://qlhp-6dc0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+			  projectId: "qlhp-6dc0a",
+			  storageBucket: "qlhp-6dc0a.appspot.com",
+			  messagingSenderId: "215730772223",
+			  appId: "1:215730772223:web:5cb60d9b0a31c632d914ca",
+			  measurementId: "G-53J8STD2EP"
+			};
+		  
+			// Initialize Firebase
+			const app = initializeApp(firebaseConfig);
+			const analytics = getAnalytics(app);
+			const messaging = getMessaging(app); // Lấy đối tượng messaging từ Firebase
+
+		// 	    getToken(messaging, { vapidKey: "BN423VzsRZpmibgVn8EqxGYRTgc2e9nJowX70zQVqcelFKjYoDzULYq5Rn51NX9ZBBy9YuJ-qkhLvC5ejtpZruI" })
+        // .then((currentToken) => {
+        //     if (currentToken) {
+        //         console.log(currentToken);
+        //         // Send the token to your server and update the UI if necessary
+        //         // // Cái này hay nè, nhớ lưu
+        //         //   messaging.getToken()
+        //         //     .then((token) => {
+        //         //       // Lưu token vào cơ sở dữ liệu Firebase
+        //         //       const userRef = ref(db, `users/${user.uid}`);
+        //         //       update(userRef, { token: token }); // Sử dụng update để cập nhật một giá trị trong cơ sở dữ liệu
+        //         //       console.log('Token:', token);
+        //         //     })
+        //         //     .catch((err) => {
+        //         //       console.log('Error getting token:', err);
+        //         //     });
+        //         // ...
+        //     } else {
+        //         // Show permission request UI
+        //         console.log('No registration token available. Request permission to generate one.');
+        //         // ...
+        //     }
+        // }).catch((err) => {
+        //     console.log('An error occurred while retrieving token. ', err);
+        //     // ...
+        // });
+		  </script>
+	   <script>
+		
+	   </script>
+
+    </body>
+
+</html>

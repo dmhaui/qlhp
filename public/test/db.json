@@ -1,0 +1,210 @@
+{
+  "class": {
+    "1": {
+      "ten_lop": "Lớp 8C",
+      "gio_day": "17h - 19h",
+      "ngay": [
+        "monday",
+        "thursday"
+      ],
+      "hoc_phi": "",
+      "loai": "Lớp học",
+      "hocsinh": {
+        "1": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "2": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "3": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "4": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "5": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "6": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        }
+      }
+    },
+    "2": {
+      "ten_lop": "Lớp 9A",
+      "gio_day": "17h - 19h",
+      "ngay": [
+        "monday",
+        "thursday"
+      ],
+      "hoc_phi": "",
+      "loai": "Lớp học",
+      "hocsinh": {
+        "1": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "2": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "3": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "4": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "5": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "6": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        }
+      }
+    },
+    "3": {
+      "ten_lop": "Lớp 7B",
+      "gio_day": "17h - 19h",
+      "ngay": [
+        "monday",
+        "thursday"
+      ],
+      "hoc_phi": "",
+      "loai": "Lớp học",
+      "hocsinh": {
+        "1": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "2": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "3": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "4": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "5": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        },
+        "6": {
+          "ten_hs": "Tên Học Sinh",
+          "sdt_ph": "0888888888",
+          "ten_ph": "Nguyễn Văn B",
+          "email_ph": "example@gmail.com",
+          "ghi_chu": "",
+          "cap_nhat": "12/12/2022",
+          "thanh_toan": {}
+        }
+      }
+    }
+  },
+  "giao_vien": {
+    "0": {
+      "ten": "Đinh Thuỳ Linh",
+      "dia_chi": "Địa chỉ",
+      "email": "linhori@example.com",
+      "sdt": "0843376996"
+    }
+  }
+}

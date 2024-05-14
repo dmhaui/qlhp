@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lựa chọn nhiều</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content label {
+  display: block;
+  padding: 5px 10px;
+}
+
+.dropdown-content button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<h2>Chọn nhiều mục:</h2>
+
+<div class="dropdown">
+  <button id="dropdownBtn" onclick="toggleDropdown()" class="dropbtn">Chọn lịch học:</button>
+  <div id="myDropdown" class="dropdown-content">
+    <label for="monday"><input type="checkbox" id="monday" name="options" value="monday"> Thứ 2</label><br>
+    <label for="tuesday"><input type="checkbox" id="tuesday" name="options" value="tuesday"> Thứ 3</label><br>
+    <label for="wednesday"><input type="checkbox" id="wednesday" name="options" value="wednesday"> Thứ 4</label><br>
+    <label for="thursday"><input type="checkbox" id="thursday" name="options" value="thursday"> Thứ 5</label><br>
+    <label for="friday"><input type="checkbox" id="friday" name="options" value="friday"> Thứ 6</label><br>
+    <label for="saturday"><input type="checkbox" id="saturday" name="options" value="saturday"> Thứ 7</label><br>
+    <label for="sunday"><input type="checkbox" id="sunday" name="options" value="sunday"> Chủ nhật</label><br><br>
+  </div>
+</div>
+
+<div id="selectedOptions"></div>
+
+<script>
+function toggleDropdown() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+document.addEventListener("click", function(event) {
+  var dropdown = document.getElementById("myDropdown");
+  var button = document.getElementById("dropdownBtn");
+  if (!dropdown.contains(event.target) && event.target !== button) {
+    dropdown.classList.remove("show");
+  }
+});
+
+document.querySelectorAll('input[name="options"]').forEach(function(item) {
+  item.addEventListener("change", function() {
+    updateSelectedOptions();
+  });
+});
+
+function updateSelectedOptions() {
+  var selectedOptions = [];
+  document.querySelectorAll('input[name="options"]:checked').forEach(function(item) {
+    selectedOptions.push(item.value);
+  });
+  displaySelectedOptions(selectedOptions);
+}
+
+// function displaySelectedOptions(selectedOptions) {
+//   var resultDiv = document.getElementById("selectedOptions");
+//   if (selectedOptions.length > 0) {
+//     var result = "";
+//     for (var i = 0; i < selectedOptions.length; i++) {
+//       result += selectedOptions[i] + "<br>";
+//     }
+//     resultDiv.innerHTML = result;
+//     document.getElementById("dropdownBtn").textContent = "Đã chọn: " + selectedOptions.join(", ");
+//   } else {
+//     resultDiv.innerHTML = "Bạn chưa chọn bất kỳ tùy chọn nào.";
+//     document.getElementById("dropdownBtn").textContent = "Chọn các mục";
+//   }
+// }
+function displaySelectedOptions(selectedOptions) {
+  var resultDiv = document.getElementById("selectedOptions");
+  if (selectedOptions.length > 0) {
+    // Tạo một đối tượng ánh xạ từ tiếng Anh sang tiếng Việt
+    var englishToVietnamese = {
+      "monday": "Thứ 2",
+      "tuesday": "Thứ 3",
+      "wednesday": "Thứ 4",
+      "thursday": "Thứ 5",
+      "friday": "Thứ 6",
+      "saturday": "Thứ 7",
+      "sunday": "Chủ nhật"
+    };
+
+    var selectedOptionsTrans = selectedOptions.map(function(day) {
+      return englishToVietnamese[day];
+    });
+
+    var result = "";
+    for (var i = 0; i < selectedOptions.length; i++) {
+      result += selectedOptions[i] + "<br>";
+    }
+    resultDiv.innerHTML = result;
+    document.getElementById("dropdownBtn").textContent = "Đã chọn: " + selectedOptionsTrans.join(", ");
+  } else {
+    resultDiv.innerHTML = "Bạn chưa chọn bất kỳ tùy chọn nào.";
+    document.getElementById("dropdownBtn").textContent = "Chọn các mục";
+  }
+}
+
+
+
+
+</script>
+
+</body>
+</html>
