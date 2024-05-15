@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 console.log("Token fetched: ",token);
                 //  Lưu token vào cơ sở dữ liệu Firebase
                   const userRef = ref(db, `users/${loggedInUser.uid}`);
-                  update(userRef, { token: token }); // Sử dụng update để cập nhật một giá trị trong cơ sở dữ liệu
+                  set(userRef, { token: token }); // Sử dụng update để cập nhật một giá trị trong cơ sở dữ liệu
             }
 
             // Thiết lập listener cho thông báo
